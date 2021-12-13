@@ -85,13 +85,32 @@ class GUI:
 
                 self.define_button(name=i[:-5],data1=data1,k=k)
                 
-            self.rtn = tt.Button(text="Return to previous screen",bg="darkgrey",width=20,borderwidth=3,command=lambda: self.new_screen(0))
-            self.rtn.grid(column=3,row=int(k/3)+1)
-            self.on_screen.append(self.rtn)
+
             
             self.gui.geometry(f"580x{(int(k/3)*20)+400}")
+            
+            self.canvas = tt.Canvas(self.gui,width = 580, height=30)
+            self.canvas.create_line(0, 15, 580, 15)
+            self.canvas.grid(column=0,columnspan=3,row=int(k/3)+2)
+            self.on_screen.append(self.canvas)
 
-  
+            self.rtn = tt.Button(text="Return to previous screen",bg="darkgrey",width=20,borderwidth=3,command=lambda: self.new_screen(0))
+            self.rtn.grid(column=0,row=int(k/3)+1)
+            self.on_screen.append(self.rtn)
+
+            self.lb123 = tt.Label(text="No nutrient is selected",width=20)
+            self.lb123.grid(column=1,row=int(k/3)+1)
+            self.on_screen.append(self.lb123)
+
+            self.lb1234 = tt.Label(text="Add water (l,ml,kg,tonnes)")
+            self.lb1234.grid(column=0,row=int(k/3)+3)
+            self.on_screen.append(self.lb1234)
+
+            self.wtr_ent = tt.Entry(borderwidth=2,width=20)
+            self.wtr_ent.grid(row=int(k/3)+4,column=0)
+            self.on_screen.append(self.wtr_ent)
+            print("yeah")
+
     def yeyo(self):
         for i in el.elements_ls:
             if (i.v.get())=="1":
@@ -117,12 +136,12 @@ class GUI:
         n.btn = tt.Button(text=f'+{name}',bg="darkgrey",width=20,borderwidth=3, command = lambda: self.add(n))
         n.btn.grid(column=int(k%3),row=int(k/3))
         self.on_screen.append(n.btn)
-    
+
     def add(self,n):
         for i in nt.nutrients_list:
             i.btn.configure(bg="darkgrey")
-        print(n.name)
         n.btn.config(bg="lightblue")
+        self.lb123.config(text=f'\"{n.name}\" is selected')
 
 the_gui = GUI()
 the_gui.gui.mainloop()
