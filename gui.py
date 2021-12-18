@@ -194,7 +194,7 @@ class GUI:
         elif len(list_nt) == 2:
             nt_amount = int(list_nt[0])
             for m in range(len(units.nt_units)):
-                for i in units.nt_get[m]:
+                for i in units.nt_units[m]:
                     if i == list_nt[1]:
                         print(float(units.nt_get[m]))
 
