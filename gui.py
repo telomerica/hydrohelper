@@ -13,7 +13,6 @@ class GUI:
         self.gui.resizable(0,0)
         self.dir = f'{os.getcwd()}/'
         self.dir_saved = f'{os.getcwd()}/saved'
-        #self.gui.iconbitmap(f'{self.dir}icon.ico')
         self.on_screen = []
         self.new_screen(0)
         self.chosen = 0
@@ -202,18 +201,18 @@ class GUI:
             for m in range(len(units.nt_units)):
                 for i in units.nt_units[m]:
                     if i == list_nt[1]:
-                        nt_amount = (float(units.nt_get[m]))
+                        nt_amount = (float(units.nt_get[m]))*nt_amount
                         self.nt_lb.insert(tt.END, f'{nt_amount} miligrams {self.chosen.name}')
                         self.solution[0].append(self.chosen)
                         self.solution[1].append(nt_amount) #miligrams
 
-        for i in self.chosen.composition[0]:
+        for i in self.chosen.composition[0]: 
             if i not in self.composition[0]:
                 self.composition[0].append(i)
                 self.composition[1].append(nt_amount*self.chosen.percentage(i)/100)
             elif i in self.composition[0]:
                 indx = self.composition[0].index(i)
-                self.composition[1][indx] = self.composition[1][indx]+(nt_amount*self.chosen.percentage(i)/100)                                
+                self.composition[1][indx] = self.composition[1][indx]+((nt_amount*self.chosen.percentage(i))/100)                                
         self.ppm()
         
     def ppm(self):
