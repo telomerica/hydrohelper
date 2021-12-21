@@ -17,6 +17,8 @@ class GUI:
         self.on_screen = []
         self.new_screen(0)
         self.chosen = 0
+        self.solution = [[],[]]
+        self.composition = [[],[]]
     
     def new_screen(self,x):
         
@@ -135,8 +137,12 @@ class GUI:
             self.on_screen.append(self.nt_lb)
 
             self.lb123456 = tt.Label(text="",width=20)
-            self.lb123456.grid(row=int(k/3)+3,column=3)
+            self.lb123456.grid(row=int(k/3)+3,column=2)
             self.on_screen.append(self.lb123456)
+
+            self.ppm_lb = tt.Listbox(borderwidth=4,height=12,width=22)
+            self.ppm_lb.grid(row=int(k/3)+4,column=2,rowspan=4)
+            self.on_screen.append(self.ppm_lb)
 
     def yeyo(self):
         for i in el.elements_ls:
@@ -184,8 +190,8 @@ class GUI:
                         wtr_amount = wtr_amount * float(units.wt_get[m])
         self.wtr_amount += wtr_amount
         self.wtr_lb.insert(tt.END,f'{wtr_amount} liters added')
-        self.lb123456.config(text=f"{self.wtr_amount} of water in solution")
-
+        self.lb123456.config(text=f"{self.wtr_amount} liters of solution")
+        self.ppm()
 
     def nt_add(self,nttext): #the amount is converted to miligrams
         list_nt = nttext.split(" ")
@@ -196,7 +202,28 @@ class GUI:
             for m in range(len(units.nt_units)):
                 for i in units.nt_units[m]:
                     if i == list_nt[1]:
-                        print(float(units.nt_get[m]))
+                        nt_amount = (float(units.nt_get[m]))
+                        self.nt_lb.insert(tt.END, f'{nt_amount} miligrams {self.chosen.name}')
+                        self.solution[0].append(self.chosen)
+                        self.solution[1].append(nt_amount) #miligrams
+
+        for i in self.chosen.composition[0]:
+            if i not in self.composition[0]:
+                self.composition[0].append(i)
+                self.composition[1].append(nt_amount*self.chosen.percentage(i)/100)
+            elif i in self.composition[0]:
+                indx = self.composition[0].index(i)
+                self.composition[1][indx] = self.composition[1][indx]+(nt_amount*self.chosen.percentage(i)/100)                                
+        self.ppm()
+        
+    def ppm(self):
+        self.ppm_lb.delete(0,tt.END)
+        print("yes")
+        for i in range(len(self.composition[1])):
+            ppm = (self.composition[1][i]/self.wtr_amount)
+            self.ppm_lb.insert(tt.END, f'{ppm} ppm of {self.composition[0][i]}')      
+        print(self.composition)
+
 
                 
 
